@@ -11,9 +11,12 @@ def appending_numbers(number):
         with open("data.txt", "a") as file:
             file.write(f'{number}\n')
 
-if __name__ == "__main__":
+def process_pool():
     numbers = range(100)
     my_lock = multiprocessing.Lock()
     with multiprocessing.Pool(processes=10, initializer=init_lock, initargs=(my_lock,)) as pool:
         pool.map(appending_numbers, numbers)
     print('файлы записаны')
+
+def main2():
+    process_pool()
