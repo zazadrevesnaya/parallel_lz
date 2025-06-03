@@ -1,28 +1,25 @@
-import threading
-import time
+import asyncio
 import random
 
-def writings_file(filename, data):
+async def create_file(filename):
     with open(f"{filename}.txt", 'w', encoding='utf-8') as file:
-        file.write(data)
+        file.write(f"data {filename}")
+    print(f"Файл {filename} создан.")
 
-def reading_file(filename):
-    with open(f"{filename}.txt", 'r', encoding='utf-8') as file:
-        file.read()
-        time.sleep(random.uniform(0.1, 5))  
-    print(f"Данные прочтены из файла {filename}")
+async def reading_file(filename):
+    delay = random.uniform(0.1, 5)  
+    await asyncio.sleep(delay)
+    print(f"Файл {filename} прочитан за {delay:.2f} сек.")
 
-start = time.time()
-threads = []
+async def main():
+    tasks = [
+        asyncio.create_task(create_file(f"filezad3_{i}")) for i in range(10)
+    ]
+    await asyncio.gather(*tasks)
+    tasks = [
+        asyncio.create_task(reading_file(f"filezad3_{i}")) for i in range(10)
+    ]
+    await asyncio.gather(*tasks)
 
-for i in range(10):
-    thread = threading.Thread(target=writings_file, args=(f"filezad3_{i}", "data"))
-    thread.start()
-    threads.append(thread)
-
-for t in threads:
-    t.join() 
-
-for i in range(10):
-    reading_file(f"filezad3_{i}") 
-
+def main3():
+    asyncio.run(main())
