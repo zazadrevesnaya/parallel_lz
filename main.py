@@ -1,7 +1,6 @@
 from zadanie1 import main1
 from zadanie2 import main2 
 from zadanie3 import main3
-import asyncio
 import time
 
 def main():
